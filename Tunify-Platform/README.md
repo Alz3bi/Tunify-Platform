@@ -37,6 +37,21 @@ The Tunify Platform consists of several entities that are related to each other 
    - An artist can create multiple albums.
    - An artist can perform multiple songs.
 
+## Repository Design Pattern
+
+### Explanation
+The Repository Design Pattern is a design pattern that mediates data access and business logic by providing a collection-like interface for accessing domain objects. It abstracts the data layer, making the application more modular and testable.
+
+### Benefits
+1. **Separation of Concerns**: By separating the data access logic from the business logic, the code becomes more maintainable and easier to understand.
+2. **Testability**: Repositories can be mocked or stubbed, making it easier to write unit tests for the business logic without depending on the actual data source.
+3. **Abstraction**: The pattern provides a higher level of abstraction for data access, allowing the underlying data source to be changed with minimal impact on the business logic.
+4. **Reusability**: Common data access logic can be reused across different parts of the application, reducing code duplication.
+5. **Consistency**: By centralizing data access logic, the pattern ensures that data access is performed in a consistent manner throughout the application.
+
+### Example
+In the Tunify Platform, the `PlaylistService` class implements the `IPlaylist` interface, providing methods to interact with the `Playlist` entity. This service acts as a repository, encapsulating the data access logic and exposing a clean API for the business logic to use.
+
 ## Example Data Seeding
 The platform seeds initial data for all entities to ensure that the database is populated with some default entries. This includes users, subscriptions, artists, albums, songs, playlists, and the relationships between them.
 
