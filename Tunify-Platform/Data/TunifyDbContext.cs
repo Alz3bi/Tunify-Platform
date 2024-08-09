@@ -31,6 +31,31 @@ namespace Tunify_Platform.Data
                 .WithMany(s => s.PlaylistSongs)
                 .HasForeignKey(ps => ps.SongId);
 
+            modelBuilder.Entity<Album>()
+                .HasOne(a => a.Artist)
+                .WithMany(ar => ar.Albums)
+                .HasForeignKey(a => a.ArtistId);
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Subscription)
+                .WithMany(s => s.Users)
+                .HasForeignKey(u => u.SubscriptionId);
+
+            modelBuilder.Entity<Song>()
+                .HasOne(s => s.Album)
+                .WithMany(a => a.Songs)
+                .HasForeignKey(s => s.AlbumId);
+
+            modelBuilder.Entity<Song>()
+                .HasOne(s => s.Artist)
+                .WithMany(ar => ar.Songs)
+                .HasForeignKey(s => s.ArtistId);
+
+            modelBuilder.Entity<Playlist>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Playlists)
+                .HasForeignKey(p => p.UserId);
+
             modelBuilder.Entity<Subscription>().HasData(
                 new Subscription { SubscriptionId = 1, SubscriptionType = "Free", Price = 0.00m },
                 new Subscription { SubscriptionId = 2, SubscriptionType = "Premium", Price = 9.99m }
@@ -47,8 +72,8 @@ namespace Tunify_Platform.Data
             );
 
             modelBuilder.Entity<Album>().HasData(
-                new Album { AlbumId = 1, AlbumName = "Album 1", ReleaseDate = DateTime.Now },
-                new Album { AlbumId = 2, AlbumName = "Album 2", ReleaseDate = DateTime.Now }
+                new Album { AlbumId = 1, AlbumName = "Album 1", ArtistId = 1, ReleaseDate = DateTime.Now },
+                new Album { AlbumId = 2, AlbumName = "Album 2", ArtistId = 2, ReleaseDate = DateTime.Now }
             );
 
             modelBuilder.Entity<Song>().HasData(
