@@ -44,7 +44,7 @@ namespace Tunify_Platform.Migrations
 
                     b.HasIndex("ArtistId");
 
-                    b.ToTable("Albums");
+                    b.ToTable("Albums", (string)null);
 
                     b.HasData(
                         new
@@ -81,7 +81,7 @@ namespace Tunify_Platform.Migrations
 
                     b.HasKey("ArtistId");
 
-                    b.ToTable("Artists");
+                    b.ToTable("Artists", (string)null);
 
                     b.HasData(
                         new
@@ -120,7 +120,7 @@ namespace Tunify_Platform.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Playlists");
+                    b.ToTable("Playlists", (string)null);
 
                     b.HasData(
                         new
@@ -151,7 +151,7 @@ namespace Tunify_Platform.Migrations
 
                     b.HasIndex("SongId");
 
-                    b.ToTable("PlaylistSongs");
+                    b.ToTable("PlaylistSongs", (string)null);
 
                     b.HasData(
                         new
@@ -202,7 +202,7 @@ namespace Tunify_Platform.Migrations
 
                     b.HasIndex("ArtistId");
 
-                    b.ToTable("Songs");
+                    b.ToTable("Songs", (string)null);
 
                     b.HasData(
                         new
@@ -242,7 +242,7 @@ namespace Tunify_Platform.Migrations
 
                     b.HasKey("SubscriptionId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Subscriptions", (string)null);
 
                     b.HasData(
                         new
@@ -285,7 +285,7 @@ namespace Tunify_Platform.Migrations
 
                     b.HasIndex("SubscriptionId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new

@@ -13,6 +13,20 @@ namespace Tunify_Platform.Repositories.Services
         {
             _context = context;
         }
+
+        public async Task<Playlist> AddSongToPlaylistAsync(int playlistId, int songId)
+        {
+            PlaylistSongs playlistSongs = new PlaylistSongs()
+            {
+                PlaylistId = playlistId,
+                SongId = songId
+            };
+            _context.PlaylistSongs.Add(playlistSongs);
+            await _context.SaveChangesAsync();
+            var playlist = await GetPlaylistByIdAsync(playlistId);
+            return playlist;
+        }
+
         public async Task<Playlist> CreatePlaylistAsync(Playlist playlist)
         {
             _context.Playlists.Add(playlist);
@@ -45,6 +59,15 @@ namespace Tunify_Platform.Repositories.Services
         public async Task<IEnumerable<Playlist>> GetPlaylistsByUserIdAsync(int userId)
         {
             return await _context.Playlists.Where(p => p.UserId == userId).ToListAsync();
+        }
+
+        public async Task<List<Song>> GetSongsInPlaylistAsync(int playlistId)
+        {
+            var songs = await _context.PlaylistSongs
+                .Where(ps => ps.PlaylistId == playlistId)
+                .Select(ps => ps.Song)
+                .ToListAsync();
+            return songs;
         }
 
         public async Task<Playlist> UpdatePlaylistAsync(Playlist playlist)

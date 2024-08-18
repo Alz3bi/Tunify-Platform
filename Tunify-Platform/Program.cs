@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using Tunify_Platform.Data;
 using Tunify_Platform.Repositories.interfaces;
 using Tunify_Platform.Repositories.Services;
@@ -16,6 +17,12 @@ namespace Tunify_Platform
             builder.Services.AddTransient<IArtist, ArtistService>();
             builder.Services.AddTransient<IPlaylist, PlaylistService>();
             builder.Services.AddTransient<IUser, UserService>();
+
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                    {
+                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                    });
 
             string connectionStringVar =  builder.Configuration.GetConnectionString("DefaultConnection");
 
