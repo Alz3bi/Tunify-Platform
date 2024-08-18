@@ -91,6 +91,26 @@ namespace Tunify_Platform.Controllers
             return NoContent();
         }
 
+        // POST: api/Artists/5/songs/3
+        [HttpPost("{artistId}/songs/{songId}")]
+        public async Task<ActionResult<Artist>> AddSongToArtist(int artistId, int songId)
+        {
+            var artist = await _artist.AddSongToArtistAsync(artistId, songId);
+            if (artist == null)
+            {
+                return NotFound();
+            }
+            return Ok(artist);
+        }
+
+        // GET: api/Artists/5/songs
+        [HttpGet("{artistId}/songs")]
+        public async Task<ActionResult<List<Song>>> GetSongsByArtist(int artistId)
+        {
+            var songs = await _artist.GetSongsByArtistAsync(artistId);
+            return Ok(songs);
+        }
+
         private bool ArtistExists(int id)
         {
             return _artist.GetArtistByIdAsync(id) != null;

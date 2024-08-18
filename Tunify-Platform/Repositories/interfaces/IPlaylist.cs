@@ -21,5 +21,11 @@ namespace Tunify_Platform.Repositories.interfaces
 
         // Delete a playlist by ID
         Task<bool> DeletePlaylistAsync(int playlistId);
+        
+        // Add a song to a playlist
+        Task<Playlist> AddSongToPlaylistAsync(int playlistId, int songId);
+
+        // Get all songs in a playlist
+        Task<List<Song>> GetSongsInPlaylistAsync(int playlistId);
     }
 }

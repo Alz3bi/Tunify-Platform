@@ -95,6 +95,22 @@ namespace Tunify_Platform.Controllers
             return NoContent();
         }
 
+        // POST: api/Playlists/5/Songs/3
+        [HttpPost("{playlistId}/Songs/{songId}")]
+        public async Task<ActionResult<Playlist>> AddSongToPlaylist(int playlistId, int songId)
+        {
+            var playlist = await _playlist.AddSongToPlaylistAsync(playlistId, songId);
+            return Ok(playlist);
+        }
+
+        // GET: api/Playlists/5/Songs
+        [HttpGet("{playlistId}/Songs")]
+        public async Task<ActionResult<List<Song>>> GetSongsInPlaylist(int playlistId)
+        {
+            var songs = await _playlist.GetSongsInPlaylistAsync(playlistId);
+            return Ok(songs);
+        }
+
         private bool PlaylistExists(int id)
         {
             return _playlist.GetPlaylistByIdAsync(id) != null;

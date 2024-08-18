@@ -18,5 +18,11 @@ namespace Tunify_Platform.Repositories.interfaces
 
         // Delete an artist by ID
         Task<bool> DeleteArtistAsync(int artistId);
+
+        // Add a song to an artist
+        Task<Artist> AddSongToArtistAsync(int artistId, int songId);
+
+        // Get all songs by an artist
+        Task<List<Song>> GetSongsByArtistAsync(int artistId);
     }
 }
