@@ -23,15 +23,39 @@ namespace Tunify_Platform
                     {
                         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
                     });
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Tunify API",
+                    Version = "v1",
+                    Description = "API for managing playlists, songs, and artists in the Tunify Platform"
+                });
+            });
 
             string connectionStringVar =  builder.Configuration.GetConnectionString("DefaultConnection");
 
             builder.Services.AddDbContext<TunifyDbContext>(options => options.UseSqlServer(connectionStringVar));
 
             var app = builder.Build();
+
+            app.UseSwagger(
+             options =>
+             {
+                 options.RouteTemplate = "api/{documentName}/swagger.json";
+             }
+);
+
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/api/v1/swagger.json", "Tunify API v1");
+                options.RoutePrefix = string.Empty;
+            });
+
             app.MapControllers();
 
-            app.MapGet("/", () => "Hello World!");
+            //app.MapGet("/", () => "Hello World!");
 
             app.Run();
         }

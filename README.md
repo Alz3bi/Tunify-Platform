@@ -56,15 +56,28 @@ The Tunify Platform utilizes the Repository Design Pattern to manage data access
 ## Example Data Seeding
 The platform seeds initial data for all entities to ensure that the database is populated with some default entries. This includes users, subscriptions, artists, albums, songs, playlists, and the relationships between them.
 
+## Swagger UI
+The Tunify Platform includes Swagger UI for API documentation and testing. Swagger UI provides a visual interface to interact with the API endpoints, making it easier for developers to understand and test the API.
+
+### Accessing Swagger UI
+1. Run the application using the following command: ```dotnet run```
+2. Open a web browser and navigate to `http://localhost:5000/api/v1/swagger.json` to view the Swagger JSON document.
+3. To access the Swagger UI, navigate to `http://localhost:5000/swagger` in your web browser.
+
+### Using Swagger UI
+- **Explore Endpoints**: The Swagger UI lists all available API endpoints. You can expand each endpoint to see details such as request parameters and response formats.
+- **Try it Out**: You can test API endpoints directly from the Swagger UI by clicking the "Try it out" button, filling in the required parameters, and executing the request.
+- **View Responses**: After executing a request, the Swagger UI displays the response, including status codes and response bodies.
+
 ## Getting Started
 To get started with the Tunify Platform, follow these steps:
 
 1. Clone the repository.
 2. Set up the database connection string in the `appsettings.json` file.
 3. Run the migrations to create and seed the database:
-   dotnet ef migrations add InitialCreate dotnet ef database update
+   ```dotnet ef migrations add InitialCreate``` ``` dotnet ef database update```
 4. Build and run the application:
-   dotnet run
+   ```dotnet run```
 
 
 ## Technologies Used
