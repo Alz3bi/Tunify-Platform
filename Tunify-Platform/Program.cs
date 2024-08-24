@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Tunify_Platform.Data;
+using Tunify_Platform.Models;
 using Tunify_Platform.Repositories.interfaces;
 using Tunify_Platform.Repositories.Services;
 
@@ -17,6 +19,7 @@ namespace Tunify_Platform
             builder.Services.AddTransient<IArtist, ArtistService>();
             builder.Services.AddTransient<IPlaylist, PlaylistService>();
             builder.Services.AddTransient<IUser, UserService>();
+            builder.Services.AddTransient<IAccount, IdentityAccountService>();
 
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
@@ -34,10 +37,19 @@ namespace Tunify_Platform
             });
 
             string connectionStringVar =  builder.Configuration.GetConnectionString("DefaultConnection");
+            if (string.IsNullOrEmpty(connectionStringVar))
+            {
+                throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            }
 
             builder.Services.AddDbContext<TunifyDbContext>(options => options.UseSqlServer(connectionStringVar));
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<TunifyDbContext>();
+
             var app = builder.Build();
+
+            app.UseAuthentication();
 
             app.UseSwagger(
              options =>
