@@ -69,6 +69,31 @@ The Tunify Platform includes Swagger UI for API documentation and testing. Swagg
 - **Try it Out**: You can test API endpoints directly from the Swagger UI by clicking the "Try it out" button, filling in the required parameters, and executing the request.
 - **View Responses**: After executing a request, the Swagger UI displays the response, including status codes and response bodies.
 
+## Identity Setup
+The Tunify Platform uses ASP.NET Core Identity for user authentication and authorization. This setup allows users to register, log in, and log out securely.
+
+### Registration
+To register a new user, send a POST request to the `/api/Account/register` endpoint with the following JSON payload:
+```JSON
+{
+  "username": "your_username",
+  "password": "your_password",
+  "email": "your_email@example.com"
+}
+```
+
+### Login
+To log in, send a POST request to the `/api/Account/login` endpoint with the following JSON payload:
+```JSON
+{
+  "username": "your_username",
+  "password": "your_password"
+}
+```
+
+### Logout
+To log out, send a POST request to the `/api/Account/logout` endpoint. No payload is required for this request.
+
 ## Getting Started
 To get started with the Tunify Platform, follow these steps:
 
