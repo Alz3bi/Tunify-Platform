@@ -9,10 +9,12 @@ namespace Tunify_Platform.Repositories.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        public IdentityAccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly JwtTokenService _jwtTokenService;
+        public IdentityAccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, JwtTokenService jwtTokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _jwtTokenService = jwtTokenService;
         }
         public async Task<UserDTO> Login(LoginDto loginDto)
         {
@@ -20,10 +22,12 @@ namespace Tunify_Platform.Repositories.Services
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByNameAsync(loginDto.Username);
+                var roles = await _userManager.GetRolesAsync(user);
                 return new UserDTO
                 {
                     Id = user.Id,
                     Username = user.UserName,
+                    Token = await _jwtTokenService.GenerateToken(user, TimeSpan.FromMinutes(2),roles)
                 };
             }
             return null;
