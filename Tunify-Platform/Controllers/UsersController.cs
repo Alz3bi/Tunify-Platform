@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,7 @@ namespace Tunify_Platform.Controllers
 
         // GET: api/Users
         [HttpGet]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var users = await _user.GetAllUsersAsync();
@@ -74,6 +76,7 @@ namespace Tunify_Platform.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
             await _user.CreateUserAsync(user);

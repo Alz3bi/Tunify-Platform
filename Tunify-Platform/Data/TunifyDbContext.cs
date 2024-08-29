@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Tunify_Platform.Models;
 
@@ -92,6 +93,17 @@ namespace Tunify_Platform.Data
                 new PlaylistSongs { PlaylistId = 1, SongId = 2 },
                 new PlaylistSongs { PlaylistId = 2, SongId = 1 }
             );
+
+            var adminRoleId = "1";
+            var userRoleId = "2";
+
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole { Id = adminRoleId, Name = "Admin", NormalizedName = "ADMIN" },
+                new IdentityRole { Id = userRoleId, Name = "User", NormalizedName = "USER" }
+            );
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            new IdentityUserRole<string> { UserId = "35f1bf8b-47da-44e7-a333-90bd27c2d098", RoleId = adminRoleId }
+        );
 
             base.OnModelCreating(modelBuilder);
         }

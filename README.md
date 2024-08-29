@@ -56,6 +56,76 @@ The Tunify Platform utilizes the Repository Design Pattern to manage data access
 ## Example Data Seeding
 The platform seeds initial data for all entities to ensure that the database is populated with some default entries. This includes users, subscriptions, artists, albums, songs, playlists, and the relationships between them.
 
+## JWT-Based Authentication Setup
+
+### Step 1: Configure JWT Authentication
+In the `Program.cs` file, configure JWT authentication:
+```C#
+builder.Services.AddAuthentication(
+	options => { options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; })
+	.AddJwtBearer(
+	options => { options.TokenValidationParameters = JwtTokenService.ValidateToken(builder.Configuration); 
+	});
+```
+
+### Step 2: Generate JWT Token
+Use the `JwtTokenService` to generate a JWT token for authenticated users:
+```C#
+public async Task GenerateToken(ApplicationUser user, TimeSpan expiryDate, IList roles)
+{
+	var userPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+	if (userPrincipal == null){ return null; } 
+	var claims = new List {
+		new Claim(JwtRegisteredClaimNames.Sub, user.UserName), 
+		new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) }; 
+	foreach (var role in roles) { claims.Add(new Claim(ClaimTypes.Role, role)); } 
+	claims.AddRange(userPrincipal.Claims); 
+	var signInKey = GetSecurityKey(_config); 
+	var token = new JwtSecurityToken(
+		expires: DateTime.Now.Add(expiryDate), 
+		signingCredentials: new SigningCredentials(signInKey, SecurityAlgorithms.HmacSha256), 
+		claims: claims ); 
+	return new JwtSecurityTokenHandler().WriteToken(token); 
+}
+```
+
+### Step 3: Secure API Endpoints
+Use the `[Authorize]` attribute to secure specific API endpoints in your controllers. Apply role-based and policy-based authorization as needed.
+```C#
+[ApiController]
+[Route("api/[controller]")]
+public class UsersController : ControllerBase 
+{ 
+	private readonly IUser _user;
+	public UsersController(IUser user)
+{
+    _user = user;
+}
+
+// GET: api/Users
+[HttpGet]
+[Authorize(Policy = "AdminPolicy")]
+public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+{
+    var users = await _user.GetAllUsersAsync();
+    return Ok(users);
+}
+
+// POST: api/Users
+[HttpPost]
+[Authorize(Policy = "AdminPolicy")]
+public async Task<ActionResult<User>> PostUser(User user)
+{
+    await _user.CreateUserAsync(user);
+    return Ok(user);
+}}
+```
+
+### Step 4: Manage Roles and Claims
+Define roles and claims in your application, ensuring they are correctly assigned to users. Seed initial roles and a default admin user with appropriate claims in the `OnModelCreating` method of your `TunifyDbContext`.
+
 ## Swagger UI
 The Tunify Platform includes Swagger UI for API documentation and testing. Swagger UI provides a visual interface to interact with the API endpoints, making it easier for developers to understand and test the API.
 
